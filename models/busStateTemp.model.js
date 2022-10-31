@@ -18,7 +18,7 @@ const busStateTempSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    inspectorID: {
+    driverID: {
       type: String,
       required: true,
     },

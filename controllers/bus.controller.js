@@ -20,7 +20,7 @@ const RegisterBus = async (req, res) => {
       const newBus = await Bus.create(data);
       if (newBus) {
         const updatedata = {
-          _id: newBus._id,
+          _id: newBus._id.valueOf(),
           sheetCount: newBus.sheetCount,
           route: newBus.route,
           busNumber: newBus.busNumber,
