@@ -8,6 +8,8 @@ const { connectDB } = require("./utils/connection");
 const UserRouter = require("./routes/user.routes");
 const HelperRouter = require("./routes/helper.routes");
 const BusRouter = require("./routes/bus.routes");
+const DriverRouter = require("./routes/driver.routes");
+const RechargeCreditRouter = require("./routes/rechargeCredit.routes");
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +27,8 @@ app.get("/", (req, res) => {
 app.use("/api/user/", UserRouter);
 app.use("/api/helper/", HelperRouter);
 app.use("/api/bus/", BusRouter);
+app.use("/api/driver/", DriverRouter);
+app.use("/api/credit/", RechargeCreditRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
