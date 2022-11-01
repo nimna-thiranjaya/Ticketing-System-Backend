@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
+const UserTravel = require("../models/userTravel.model");
 const jwt = require("jsonwebtoken");
 const QRCode = require("qrcode");
 
@@ -510,6 +511,39 @@ const GetNotAllocatedDrivers = async (req, res) => {
   }
 };
 
+const GetAllTravelHistory = async (req, res) => {
+  try {
+    const allTravelHistory = await UserTravel.find();
+
+    return res.status(200).send({ status: true, users: allTravelHistory });
+  } catch (err) {
+    return res.status(500).send({ status: false, message: err.message });
+  }
+};
+
+const GetTravelHistoryByID = async (req, res) => {
+  try {
+    const userID = req.params.id;
+
+    const travelHistory = await UserTravel.find({ passengerID: userID });
+
+    return res.status(200).send({ status: true, travelHistory: travelHistory });
+  } catch (err) {
+    return res.status(500).send({ status: false, message: err.message });
+  }
+};
+
+const GetTravelHistoryBytoken = async (req, res) => {
+  try {
+    const userID = req.logedUser._id;
+
+    const travelHistory = await UserTravel.find({ passengerID: userID });
+
+    return res.status(200).send({ status: true, travelHistory: travelHistory });
+  } catch (err) {
+    return res.status(500).send({ status: false, message: err.message });
+  }
+};
 module.exports = {
   UserRegister,
   UserLogin,
@@ -524,4 +558,7 @@ module.exports = {
   DeleteUserById,
   UpdateUserById,
   GetNotAllocatedDrivers,
+  GetAllTravelHistory,
+  GetTravelHistoryByID,
+  GetTravelHistoryBytoken,
 };

@@ -147,6 +147,7 @@ const PassengerGetOn = async (req, res) => {
         if (newPassengerTravel) {
           await User.findByIdAndUpdate(passenger._id, {
             totalCredit: passenger.totalCredit - fare,
+            inATravelID: newPassengerTravel._id,
           });
 
           await Bus.findByIdAndUpdate(bus._id, {
@@ -189,16 +190,20 @@ const PassengerGetOff = async (req, res) => {
     const { QRToken } = req.body;
     const logedUser = req.logedUser;
     var UserData = jwt.verify(QRToken, process.env.JWT_SECRET_QR);
+    var passenger = await User.findOne({ _id: UserData.userID });
     var bus = await Bus.findOne({ driverID: logedUser._id });
     var busRunning = await BusStateTemp.findOne({ _id: bus.BusRunningID });
 
-    await UserTravel.findOneAndUpdate(
-      { busRunningID: bus.BusRunningID, passengerID: UserData.userID },
-      { getOffTime: new Date() }
-    );
+    await UserTravel.findByIdAndUpdate(passenger.inATravelID, {
+      getOffTime: new Date(),
+    });
 
     await BusStateTemp.findByIdAndUpdate(bus.BusRunningID, {
       remainingSeats: busRunning.remainingSeats + 1,
+    });
+
+    await User.findByIdAndUpdate(passenger._id, {
+      inATravelID: null,
     });
 
     return res.status(200).send({ status: true, message: "Passenger Get Off" });
@@ -207,4 +212,24 @@ const PassengerGetOff = async (req, res) => {
   }
 };
 
-module.exports = { ChangeBusState, PassengerGetOn, PassengerGetOff };
+const GetBusCurrentStatus = async (req, res) => {
+  try {
+    const LogedUser = req.logedUser;
+
+    const busRunningStatus = await BusStateTemp.findOne({
+      busId: LogedUser.busDetails._id,
+      driverID: LogedUser._id,
+    });
+    return res
+      .status(200)
+      .send({ status: true, busRunningStatus: busRunningStatus });
+  } catch (err) {
+    return res.status(500).send({ status: false, message: err.message });
+  }
+};
+module.exports = {
+  ChangeBusState,
+  PassengerGetOn,
+  PassengerGetOff,
+  GetBusCurrentStatus,
+};
