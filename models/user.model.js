@@ -71,6 +71,9 @@ const userSchema = new mongoose.Schema(
     busDriverStatus: {
       type: Boolean,
     },
+    inATravelID: {
+      type: String,
+    },
     tokens: [{ type: Object }],
   },
   {

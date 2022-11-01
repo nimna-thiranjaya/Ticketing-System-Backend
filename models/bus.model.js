@@ -33,6 +33,13 @@ const busSchema = new mongoose.Schema(
       type: String,
       default: "Stopped",
     },
+    BusRunningID: {
+      type: String,
+    },
+    totalEarning: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
