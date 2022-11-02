@@ -25,10 +25,6 @@ const busSchema = new mongoose.Schema(
     driver: {
       type: Object,
     },
-    busDriverStatus: {
-      type: Boolean,
-      default: false,
-    },
     busState: {
       type: String,
       default: "Stopped",

@@ -49,7 +49,7 @@ const GetPassengerDetailsByQR = async (req, res) => {
         .status(400)
         .send({ status: false, message: "Passenger Not Found" });
     } else {
-      return res.status(200).send({ status: true, data: passenger });
+      return res.status(200).send({ status: true, passenger: passenger });
     }
   } catch (err) {
     return res.status(500).send({ status: false, message: err.message });
@@ -65,7 +65,9 @@ const GetAllInspectorReport = async (req, res) => {
         .status(400)
         .send({ status: false, message: "No Status Found" });
     } else {
-      return res.status(200).send({ status: true, data: inspectorStatus });
+      return res
+        .status(200)
+        .send({ status: true, inspectors: inspectorStatus });
     }
   } catch (err) {
     return res.status(500).send({ status: false, message: err.message });
