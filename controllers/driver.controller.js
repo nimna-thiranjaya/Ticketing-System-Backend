@@ -129,6 +129,7 @@ const PassengerGetOn = async (req, res) => {
 
         const data = {
           passengerID: passenger._id,
+          passengerName: passenger.fullName,
           busID: bus._id,
           busRunningID: bus.BusRunningID,
           busNumber: bus.busNumber,
@@ -227,9 +228,20 @@ const GetBusCurrentStatus = async (req, res) => {
     return res.status(500).send({ status: false, message: err.message });
   }
 };
+
+const GetNotAssignDrivers = async (req, res) => {
+  try {
+    const drivers = await User.find({ role: "Driver", busDriverStatus: false });
+
+    return res.status(200).send({ status: true, driversNotAssign: drivers });
+  } catch (err) {
+    return res.status(500).send({ status: false, message: err.message });
+  }
+};
 module.exports = {
   ChangeBusState,
   PassengerGetOn,
   PassengerGetOff,
   GetBusCurrentStatus,
+  GetNotAssignDrivers,
 };

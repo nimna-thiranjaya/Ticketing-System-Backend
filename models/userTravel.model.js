@@ -6,6 +6,9 @@ const UserTravelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    passengerName: {
+      type: String,
+    },
     busID: {
       type: String,
       required: true,
