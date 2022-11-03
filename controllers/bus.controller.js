@@ -1,5 +1,6 @@
 const Bus = require("../models/bus.model");
 const User = require("../models/user.model");
+const BusStateTemp = require("../models/busStateTemp.model");
 
 //Register Bus
 const RegisterBus = async (req, res) => {
@@ -118,7 +119,7 @@ const GetOneBus = async (req, res) => {
     const BusID = req.params.busID;
     const bus = await Bus.findById(BusID);
     if (bus) {
-      return res.status(200).send({ status: true, data: bus });
+      return res.status(200).send({ status: true, busdetails: bus });
     } else {
       return res.status(400).send({ status: false, message: "Bus not found" });
     }
@@ -127,4 +128,21 @@ const GetOneBus = async (req, res) => {
   }
 };
 
-module.exports = { RegisterBus, UpdateBus, DeleteBus, GetAllBuses, GetOneBus };
+const GetOneBusTemp = async (req, res) => {
+  try {
+    const BusID = req.params.busID;
+    const bus = await BusStateTemp.findOne({ busId: BusID });
+    return res.status(200).send({ status: true, bustempDetails: bus });
+  } catch (err) {
+    return res.status(500).send({ status: false, message: err.message });
+  }
+};
+
+module.exports = {
+  RegisterBus,
+  UpdateBus,
+  DeleteBus,
+  GetAllBuses,
+  GetOneBus,
+  GetOneBusTemp,
+};
